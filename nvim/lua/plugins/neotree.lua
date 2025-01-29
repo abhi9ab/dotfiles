@@ -313,7 +313,9 @@ return {
 		vim.keymap.set("n", "<leader>ngs", ":Neotree float git_status<CR>", { noremap = true, silent = true }) -- open git status window
 		vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
 			callback = function()
-				require("neo-tree.command").execute({ action = "refresh" })
+				local filesystem_commands = require("neo-tree.sources.filesystem.commands")
+				local manager = require("neo-tree.sources.manager")
+				filesystem_commands.refresh(manager.get_state("filesystem"))
 			end,
 		})
 	end,
