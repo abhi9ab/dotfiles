@@ -4,9 +4,14 @@ $directory\
 $git_branch\
 $git_status\
 $fill\
+$conda\
 $python\
+$c\
+$java\
+$php\
 $lua\
 $nodejs\
+$deno\
 $golang\
 $haskell\
 $rust\
@@ -20,7 +25,7 @@ $line_break\
 $character"""
 
 add_newline = true
-palette = 'nord'
+palette = 'catppuccin_mocha'
 
 [os]
 disabled = false
@@ -61,51 +66,148 @@ truncate_to_repo = false
 'Downloads' = ' '
 'Music' = ' '
 'Pictures' = ' '
+"Dev" = "󰲋 "
 
 [git_branch]
-style = 'fg:green'
+style = 'bold purple'
 symbol = ' '
-format = '[on](white) [$symbol$branch ]($style)'
+format = 'on [$symbol$branch(:$remote_branch)]($style) '
 
 [git_status]
-style = 'fg:green'
-format = '([$all_status$ahead_behind]($style) )'
+style = 'bold red'
+format = '([\[$all_status$ahead_behind\]]($style) )'
+conflicted = '='
+ahead = '⇡'
+behind = '⇣'
+diverged = '⇕'
+up_to_date = ''
+untracked = '?'
+stashed = '$'
+modified = '!'
+staged = '+'
+renamed = '»'
+deleted = '✘'
+typechanged = ""
 
 [fill]
 symbol = ' '
 
 [python]
-style = 'teal'
+style = 'yellow bold'
 symbol = ' '
-format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+version_format = 'v${raw}'
 pyenv_version_name = true
 pyenv_prefix = ''
+python_binary = ['python', 'python3', 'python2']
+detect_extensions = ['py', 'ipynb']
+detect_files = ['.python-version', 'Pipfile', '__init__.py', 'pyproject.toml', 'requirements.txt', 'setup.py', 'tox.ini', 'pixi.toml']
+
+[conda]
+format = 'via [$symbol$environment]($style) '
+style = 'bold green'
+symbol = '🅒 '
+ignore_base = false
+truncation_length = 0
+
+[c]
+style = 'bold 149'
+symbol = " "
+format = 'via [$symbol($version(-$name) )]($style)'
+version_format = 'v${raw}'
+detect_extensions = ['c', 'h']
+commands = [ [ 'cc', '--version' ], [ 'gcc', '--version' ], [ 'clang', '--version' ] ]
+
+[php]
+style = '147 bold'
+symbol = ""
+format = 'via [$symbol($version )]($style)'
+version_format = 'v${raw}'
+detect_extensions = ['php']
+detect_files = ['composer.json', '.php-version']
+
+[java]
+style = 'red dimmed'
+symbol = " "
+format = 'via [${symbol}(${version} )]($style)'
+version_format = 'v${raw}'
+detect_extensions = ['java', 'class', 'gradle', 'jar', 'cljs', 'cljc']
+detect_files = ['pom.xml', 'build.gradle.kts', 'build.sbt', '.java-version', 'deps.edn', 'project.clj', 'build.boot', '.sdkmanrc']
+
+[kotlin]
+style = "bold blue"
+symbol = ""
+format = 'via [$symbol($version )]($style)'
+version_format = 'v${raw}'
+detect_extensions = ['kt', 'kts']
+kotlin_binary = 'kotlin'
 
 [lua]
+style = "bold blue"
 symbol = ' '
+format = 'via [$symbol($version )]($style)'
+version_format = 'v${raw}'
+detect_extensions = ['lua']
+detect_files = ['.lua-version']
+detect_folders = ['lua']
+lua_binary = 'lua'
 
 [nodejs]
-style = 'blue'
+style = 'bold green'
 symbol = ' '
+format = 'via [$symbol($version )]($style)'
+version_format = 'v${raw}'
+detect_extensions = ['js', 'mjs', 'cjs', 'ts', 'mts', 'cts']
+detect_files = ['package.json', '.node-version', '.nvmrc']
+detect_folders = ['node_modules']
+not_capable_style = 'bold red'
+
+[deno]
+style = 'green bold'
+symbol = '🦕 '
+format = 'via [$symbol($version )]($style)'
+version_format = 'v${raw}'
+detect_files = ['deno.json', 'deno.jsonc', 'deno.lock', 'mod.ts', 'mod.js', 'deps.ts', 'deps.js']
 
 [golang]
-style = 'blue'
+style = 'bold cyan'
 symbol = ' '
+format = 'via [$symbol($version )]($style)'
+version_format = 'v${raw}'
+detect_extensions = ['go']
+detect_files = ['go.mod', 'go.sum', 'go.work', 'glide.yaml', 'Gopkg.yml', 'Gopkg.lock', '.go-version']
+detect_folders = ['Godeps']
+not_capable_style = 'bold red'
 
 [haskell]
-style = 'blue'
+style = 'bold purple'
 symbol = ' '
+format = 'via [$symbol($version )]($style)'
+detect_extensions = ['hs', 'cabal', 'hs-boot']
+detect_files = ['stack.yaml', 'cabal.project']
 
 [rust]
-style = 'orange'
+style = 'bold red'
 symbol = ' '
+format = 'via [$symbol($version )]($style)'
+version_format = 'v${raw}'
+detect_extensions = ['rs']
+detect_files = ['Cargo.toml']
 
 [ruby]
-style = 'blue'
+style = 'bold red'
 symbol = ' '
+format = 'via [$symbol($version )]($style)'
+version_format = 'v${raw}'
+detect_extensions = ['rb']
+detect_files = 	['Gemfile', '.ruby-version']
+detect_variables = ['RUBY_VERSION', 'RBENV_VERSION']
 
 [package]
+style = 'bold 208'
 symbol = '󰏗 '
+format = 'is [$symbol$version]($style) '
+version_format = 'v${raw}'
 
 [aws]
 symbol = ' '
@@ -114,14 +216,14 @@ format = '[$symbol($profile )(\[$duration\] )]($style)'
 
 [docker_context]
 symbol = ' '
-style = 'fg:#06969A'
-format = '[$symbol]($style) $path'
+style = 'blue bold'
+format = 'via [$symbol$context]($style) '
 detect_files = ['docker-compose.yml', 'docker-compose.yaml', 'Dockerfile']
 detect_extensions = ['Dockerfile']
 
 [jobs]
 symbol = ' '
-style = 'red'
+style = 'bold blue'
 number_threshold = 1
 format = '[$symbol]($style)'
 
@@ -155,3 +257,32 @@ yellow='#e5c07b'
 gray='#828997'
 white ='#abb2bf'
 black='#2c323c'
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+orange = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
